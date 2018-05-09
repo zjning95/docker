@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+  <GlobalNamingResources>
+    <Resource name="UserDatabase" 
+	      auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+
+  <Service name="Catalina">
+    <Executor name="tomcatThreadPool"
+              namePrefix="exec-"
+              maxThreads="1000"
+              minSpareThreads="100" 
+              enableLookups="ture"
+              maxIdleTime="600"/>
+
+    <Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
+               executor="tomcatThreadPool"
+               acceptCount="200"
+               keepAliveTimeout="15000"
+               enableLookups="false" 
+               maxKeepAliveRequests="1"
+               connectionTimeout="2000"
+               maxConnections="10000"
+               acceptorThreadCount="2"
+               redirectPort="8443" />
+
+    <Engine name="Catalina" defaultHost="localhost">
+
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>
+      </Realm>
+
+      <Host name="localhost"  appBase="webapps" unpackWARs="true" autoDeploy="true">
+
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log" suffix=".txt"
+               pattern="%{X-Real-IP}i %t &quot;%r&quot; %s %b %D" />
+
+      </Host>
+    </Engine>
+  </Service>
+</Server>
