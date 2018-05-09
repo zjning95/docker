@@ -9,3 +9,5 @@ docker run --hostname=tomcat-api -v /webdata:/webdata --name tomcat-api  -d -p 9
 
 docker run --hostname=tomcat-manage -v /webdata:/webdata --name tomcat-manage  -d -p 8080:8080 tomcat-manage      						
 启动tomcat-manage 
+
+docker run --hostname tomcat-test -v /data/test/webapps:/usr/local/apache-tomcat-8.0.32/webapps -v /data/test/logs:/usr/local/apache-tomcat-8.0.32/logs --name tomcat-test -d -p 9080:8080 docker.io/zjning1995/tomcat8
